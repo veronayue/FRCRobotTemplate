@@ -2,10 +2,12 @@ package competition.subsystems.drive;
 
 import org.apache.log4j.Logger;
 
+import com.ctre.CANTalon.TalonControlMode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import xbot.common.command.BaseSubsystem;
+import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.actuators.XSpeedController;
 import xbot.common.injection.wpi_factories.WPIFactory;
 import xbot.common.properties.XPropertyManager;
@@ -14,28 +16,33 @@ import xbot.common.properties.XPropertyManager;
 public class DriveSubsystem extends BaseSubsystem {
     private static Logger log = Logger.getLogger(DriveSubsystem.class);
 
-    public final XSpeedController leftFrontDrive;
-    public final XSpeedController leftRearDrive;
-    public final XSpeedController rightFrontDrive;
-    public final XSpeedController rightRearDrive;
+    public final XCANTalon leftMaster;
+    public final XCANTalon leftFollower;
+    public final XCANTalon rightMaster;
+    public final XCANTalon rightFollower;
 
     @Inject
     public DriveSubsystem(WPIFactory factory, XPropertyManager propManager) {
         log.info("Creating DriveSubsystem");
+        
+        leftMaster=factory.getCANTalonSpeedController(34);
+        leftFollower=factory.getCANTalonSpeedController(35);
+        rightMaster=factory.getCANTalonSpeedController(21);
+        rightFollower=factory.getCANTalonSpeedController(20);
 
-        this.leftFrontDrive = factory.getSpeedController(0);
-        this.leftRearDrive = factory.getSpeedController(2);
-
-        this.rightFrontDrive = factory.getSpeedController(1);
-        this.rightFrontDrive.setInverted(true);
-        this.rightRearDrive = factory.getSpeedController(3);
-        this.rightRearDrive.setInverted(true);
+        leftFollower.setControlMode(TalonControlMode.Follower);
+        leftFollower.set(34);
+        rightFollower.setControlMode(TalonControlMode.Follower);
+        rightFollower.set(21);
+        
+        
     }
 
     public void tankDrive(double leftPower, double rightPower) {
-        this.leftFrontDrive.set(leftPower);
-        this.leftRearDrive.set(leftPower);
-        this.rightFrontDrive.set(rightPower);
-        this.rightRearDrive.set(rightPower);
+       
+        leftMaster.set(leftPower);
+        rightMaster.set(rightPower);
+        
+        
     }
 }
