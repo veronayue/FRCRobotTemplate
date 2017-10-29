@@ -10,7 +10,10 @@ import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.actuators.XSolenoid;
 import xbot.common.controls.actuators.XSpeedController;
+import xbot.common.controls.sensors.NavImu.ImuType;
+import xbot.common.controls.sensors.XGyro;
 import xbot.common.injection.wpi_factories.WPIFactory;
+import xbot.common.math.ContiguousHeading;
 import xbot.common.properties.XPropertyManager;
 
 @Singleton
@@ -22,7 +25,8 @@ public class DriveSubsystem extends BaseSubsystem {
     public final XCANTalon rightMaster;
     public final XCANTalon rightFollower;
     public final XSolenoid shift;
-
+    public final XGyro rotationGyroDetector; 
+    
     @Inject
     public DriveSubsystem(WPIFactory factory, XPropertyManager propManager) {
         log.info("Creating DriveSubsystem");
@@ -42,8 +46,16 @@ public class DriveSubsystem extends BaseSubsystem {
         this.shift = factory.getSolenoid(1);
         this.shift.setInverted(true);
         
+        rotationGyroDetector= factory.getGyro(ImuType.navX);
+       
     }
 
+    public ContiguousHeading getHeading(){
+        
+        return rotationGyroDetector.getYaw();
+        
+    }
+    
     public void tankDrive(double leftPower, double rightPower) {
        
         leftMaster.set(leftPower);
