@@ -10,11 +10,14 @@ import xbot.common.math.ContiguousHeading;
 public class Turn90DegreeLeftCommand extends BaseCommand{
 
     ContiguousHeading goalDegree;
+    ContiguousHeading startDegree;
     ContiguousHeading currentDegree;
-    double error;
+    
     final DriveSubsystem drive;
-    double speed;
-
+    double oldError;
+    double currentError;
+    double errorVelocity;
+    
     
     
     @Inject
@@ -26,7 +29,7 @@ public class Turn90DegreeLeftCommand extends BaseCommand{
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
-        currentDegree=drive.getHeading();
+        startDegree=drive.getHeading();
         goalDegree=currentDegree.shiftValue(90);
      
     
@@ -37,9 +40,14 @@ public class Turn90DegreeLeftCommand extends BaseCommand{
         // TODO Auto-generated method stub
 
         currentDegree=drive.getHeading();
-        error=goalDegree.difference(currentDegree);
+        currentError=goalDegree.difference(currentDegree);
+        errorVelocity=oldError-currentError;
         
+        double power=currentError/13-errorVelocity/2;
+        //drive.tankDrive ()
+        oldError=currentError;
         
+      
    
     }
 
