@@ -47,15 +47,24 @@ public class DriveSubsystem extends BaseSubsystem {
         this.shift.setInverted(true);
         
         rotationGyroDetector= factory.getGyro(ImuType.navX);
+        
+        leftMaster.setControlMode(TalonControlMode.PercentVbus);
+        rightMaster.setControlMode(TalonControlMode.PercentVbus);
        
     }
 
     public ContiguousHeading getHeading(){
         
         return rotationGyroDetector.getYaw();
-        
+    }  
+    public boolean isBroken(){
+          return rotationGyroDetector.isBroken();
     }
-    
+      
+      public boolean isConnected(){
+         return rotationGyroDetector.isConnected();
+     }
+       
     public void tankDrive(double leftPower, double rightPower) {
        
         leftMaster.set(leftPower);
@@ -64,3 +73,4 @@ public class DriveSubsystem extends BaseSubsystem {
         
     }
 }
+ 
