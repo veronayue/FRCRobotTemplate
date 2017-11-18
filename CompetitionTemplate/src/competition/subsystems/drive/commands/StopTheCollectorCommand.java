@@ -1,14 +1,20 @@
 package competition.subsystems.drive.commands;
 
+import com.google.inject.Inject;
+
 import competition.subsystems.drive.PickUpBallsSubsystem;
+
 import xbot.common.command.BaseCommand;
-import xbot.common.properties.XPropertyManager;
+
 
 public class StopTheCollectorCommand extends BaseCommand{
+    final PickUpBallsSubsystem pickUp;
+    
     
     @Inject
-    public StopTheCollectorCommand(PickUpBallsSubsystem pickUpBallsSubsystem){
-        requires(pickUpBallsSubsystem);
+    public StopTheCollectorCommand(PickUpBallsSubsystem p){
+        requires(p);
+        pickUp=p;
     }
 
     @Override
@@ -21,10 +27,7 @@ public class StopTheCollectorCommand extends BaseCommand{
     public void execute() {
         // TODO Auto-generated method stub
         
+        pickUp.stop();
     }
-
-    
-    
-    
-
+  
 }
