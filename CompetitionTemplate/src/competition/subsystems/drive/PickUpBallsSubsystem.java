@@ -2,6 +2,7 @@ package competition.subsystems.drive;
 
 import org.apache.log4j.Logger;
 
+import com.ctre.CANTalon.TalonControlMode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -32,6 +33,7 @@ public class PickUpBallsSubsystem extends BaseSubsystem {
                  
         motorCollector=factory.getCANTalonSpeedController(30);
         motorCollector.setInverted(true);
+        motorCollector.setControlMode(TalonControlMode.PercentVbus);
    
     }
     

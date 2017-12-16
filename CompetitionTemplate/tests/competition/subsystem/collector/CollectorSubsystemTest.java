@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import competition.subsystems.drive.PickUpBallsSubsystem;
+import competition.subsystems.drive.commands.CollectBallsCommand;
 
 public class CollectorSubsystemTest extends BaseWPITest {
 
@@ -25,8 +26,16 @@ public class CollectorSubsystemTest extends BaseWPITest {
     
     @Test
     public void testMotorResponse() {
-        pubs.collectBall();
+        pubs.collect();
         
-        assertEquals(-1,pubs.motorCollector.get() ,0.001);
+        assertEquals(1,pubs.motorCollector.get() ,0.001); 
+        
+        pubs.reject();
+        
+        assertEquals(-1,pubs.motorCollector.get() ,0.001); 
+        
+        
     }
+    
+    
 }
